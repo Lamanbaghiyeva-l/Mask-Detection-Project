@@ -27,23 +27,19 @@ def safe_crop_xyxy(img, bbox):
         return None
     return face
 
-# 1) JSON-ları oxu
 jsonfiles = []
 for fn in os.listdir(annotation_path):
     if fn.endswith(".json"):
         jsonfiles.append(getJSON(os.path.join(annotation_path, fn)))
 
-# qarışdır ki, ilk 114 “həmişə eyni” olmasın
 random.shuffle(jsonfiles)
 
-# 2) çıxış qovluqları
 os.makedirs("out/with_mask", exist_ok=True)
 os.makedirs("out/with_no_mask", exist_ok=True)
 
 mask_count = 0
 nomask_count = 0
 
-# 3) dataset-dən crop-ları yığ
 for jf in jsonfiles:
     if mask_count >= TARGET_PER_CLASS and nomask_count >= TARGET_PER_CLASS:
         break
